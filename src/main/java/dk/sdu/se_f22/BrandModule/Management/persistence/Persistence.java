@@ -7,6 +7,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Persistence implements IPersistence {
+    private Connection c = null;
+
+    public Persistence() {
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/semesterprojekt",
+                            "postgres", "new_password");
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+        }
+    }
 
     @Override
     public void createBrand(Brand brand) {
@@ -30,20 +42,20 @@ public class Persistence implements IPersistence {
 
     @Override
     public void setupDatabase() {
-        //fill in database name and password
-        final String url = "jdbc:postgresql://localhost:5432/Database_Name"; //
-        final String user = "postgres";
-        final String password = "";
-
         try {
-            Connection connection = DriverManager.getConnection(url, user, password);
-
-            if (connection != null) {
-                System.out.println("Successfully connected to brand test database.");
-            }
-        } catch (SQLException e) {
-            System.out.println("Failed to connect to brand test database.");
-            e.printStackTrace();
+            var stmt = c.createStatement();
+            String sql = "CREATE TABLE IF NOT EXISTS Brand " +
+                    "(id serial PRIMARY KEY," +
+                    "name VARCHAR(255) UNIQUE NOT NULL, " +
+                    "description VARCHAR(10000), " +
+                    "founded VARCHAR(255), " +
+                    "headquarters VARCHAR(255));";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            c.close();
+        }
+        catch (Exception e) {
+            System.out.println(e);
         }
     }
 
