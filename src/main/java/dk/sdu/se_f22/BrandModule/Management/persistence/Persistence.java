@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 public class Persistence implements IPersistence {
 
+
     @Override
     public void createBrand(Brand brand) {
 
@@ -19,12 +20,22 @@ public class Persistence implements IPersistence {
     }
 
     @Override
-    public void deleteBrand(int id) {
+    public Brand getBrand(String name) {
+        return null;
+    }
+
+    @Override
+    public void removeBrand(Brand brand) {
 
     }
 
     @Override
-    public void updateBrand(int id, Brand brand) {
+    public Brand updateBrand(Brand brand) {
+        return null;
+    }
+
+    @Override
+    public void setIndexInterval(int indexInterval) {
 
     }
 
